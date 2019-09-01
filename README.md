@@ -2,9 +2,9 @@
 This is a Class that allows user to save data in a non-sql data base.
 
 ## Installation
-Clone or download this repository to MQL5/Include folder
-[Download or Clone my node js server](https://github.com/TiagoAmaral53/Mql5ToMongoApi) - Follow Mql5ToMongoApi instruction
-Allow web request on your Meta trader 5 by allow WebRequests on Metatrader5 < Tools < Options < Expert Advisers < Tick Allow WebRequests and insert your url. 
+* Clone or download this repository to MQL5/Include folder
+* [Download or Clone my node js server](https://github.com/TiagoAmaral53/Mql5ToMongoApi) - Follow Mql5ToMongoApi instruction
+* Allow web request on your Meta trader 5 by allow WebRequests on Metatrader5 < Tools < Options < Expert Advisers < Tick Allow WebRequests and insert your url. 
 
 ## Usage
 
