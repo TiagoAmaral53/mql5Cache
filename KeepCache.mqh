@@ -5,25 +5,9 @@
 //+------------------------------------------------------------------+
 #property copyright "TiagoAmaral";
 #property link      "https://github.com/TiagoAmaral53/mql5Cache";
+
 //+------------------------------------------------------------------+
-//| defines                                                          |
-//+------------------------------------------------------------------+
-// #define MacrosHello   "Hello, world!"
-// #define MacrosYear    2010
-//+------------------------------------------------------------------+
-//| DLL imports                                                      |
-//+------------------------------------------------------------------+
-// #import "user32.dll"
-//   int      SendMessageA(int hWnd,int Msg,int wParam,int lParam);
-// #import "my_expert.dll"
-//   int      ExpertRecalculate(int wParam,int lParam);
-// #import
-//+------------------------------------------------------------------+
-//| EX5 imports                                                      |
-//+------------------------------------------------------------------+
-// #import "stdlib.ex5"
-//   string ErrorDescription(int error_code);
-// #import
+//|                                                                  |
 //+------------------------------------------------------------------+
 class KeepCache
   {
@@ -71,13 +55,16 @@ string KeepCache::GetItem(string key)
    if(res == "undifined")
      {
       return "undifined";
-     }else if(res == -1)
-             {
-              return GetLastError();
-             }else
-                {
-                 return res;
-                }
+     }
+   else
+      if(res == -1)
+        {
+         return GetLastError();
+        }
+      else
+        {
+         return res;
+        }
   }
 
 //+------------------------------------------------------------------+
@@ -85,6 +72,19 @@ string KeepCache::GetItem(string key)
 //+------------------------------------------------------------------+
 bool KeepCache::DeleteItem(string key)
   {
+  string res = Request(key,"", true);
+   if(res == "undifined")
+     {
+      return false;
+     }
+   else
+      if(res == -1)
+        {
+         return GetLastError();
+        }
+      else if(res == 200){     
+         return true;
+        }
    return true;
   }
 
@@ -93,23 +93,29 @@ bool KeepCache::DeleteItem(string key)
 //+------------------------------------------------------------------+
 string KeepCache::Request(string key = "", string value = "", bool del = false)
   {
-     char post[], result[];
+   char post[], result[];
    string cookie = NULL, headers;
    int res = 0;
-   
-  if(del)
-    {
-     //action
-    }else if(StringLen(key) > 0)
-            {
-               res=WebRequest("GET",this.url + "/get/"+key,cookie,NULL,500,post,0,result,headers);
-            }else if(StringLen(key) > 0 && StringLen(value)> 0)
-                    {
-                     res=WebRequest("GET",this.url + "/set/"+key+value,cookie,NULL,500,post,0,result,headers);
-                    }
+
+   if(del)
+     {
+      res=WebRequest("GET",this.url + "/del/"+key,cookie,NULL,500,post,0,result,headers);
+     }
+   else
+      if(StringLen(key) > 0 && StringLen(value)> 0)
+        {
+        string newurl = this.url + "/set/"+key+"/"+value;
+         res=WebRequest("GET", newurl ,cookie,NULL,500,post,0,result,headers);
+        }
+      else
+         if(StringLen(key) > 0)
+           {
+            res=WebRequest("GET",this.url + "/get/"+key,cookie,NULL,500,post,0,result,headers);
+           }
 
 
-   
+
+
    if(res == -1)
      {
       return GetLastError();
@@ -123,7 +129,7 @@ string KeepCache::Request(string key = "", string value = "", bool del = false)
         {
          return GetLastError();
         }
-}
+  }
 //+------------------------------------------------------------------+
 
 //+------------------------------------------------------------------+
